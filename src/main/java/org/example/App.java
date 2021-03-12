@@ -8,7 +8,10 @@ import javafx.stage.Stage;
 
 
 /**
- * JavaFX App
+ * JavaFX App: Game of Life.
+ * Rules:
+ * Any live cell with fewer than two live neighbours dies, as if by underpopulation
+ *
  */
 public class App extends Application {
 
