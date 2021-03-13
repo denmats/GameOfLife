@@ -3,7 +3,6 @@ package org.example;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -13,18 +12,13 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.NonInvertibleTransformException;
 
 public class MainView extends VBox {
-    private Button stepButton;
+
     private Canvas canvas;
     private Affine affine;
     private Simulation simulation;
-    private int drawMode = 1;
+    private int drawMode = Simulation.ALIVE;
 
     public MainView() {
-        this.stepButton = new Button(("step"));
-        this.stepButton.setOnAction(actionEvent -> {
-            simulation.step();
-            draw();
-        });
 
         this.canvas = new Canvas(400,400);
         this.canvas.setOnMousePressed(this::handleDraw);
@@ -32,7 +26,9 @@ public class MainView extends VBox {
 
         this.setOnKeyPressed(this::getOnKeyPressed);
 
-        this.getChildren().addAll(this.stepButton, this.canvas);
+        ToolBar toolBar = new ToolBar(this);
+
+        this.getChildren().addAll(toolBar, this.canvas);
 
         this.affine = new Affine();
         this.affine.appendScale(400/10f,400/10f);
@@ -42,9 +38,9 @@ public class MainView extends VBox {
 
     private void getOnKeyPressed(KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.D){
-            this.drawMode = 1; //Pressing key D set up "drawing mode"
+            this.drawMode = Simulation.ALIVE; //Pressing key D set up "drawing mode"
         }else if(keyEvent.getCode() == KeyCode.E){
-            this.drawMode = 0; //Pressing key E set up "Erasing mode"
+            this.drawMode = Simulation.DEAD; //Pressing key E set up "Erasing mode"
         }
     }
 
@@ -82,7 +78,7 @@ public class MainView extends VBox {
         g.setFill(Color.BLACK);
         for (int x = 0; x < this.simulation.width; x++) {
             for (int y = 0; y < this.simulation.height; y++) {
-                if(simulation.getState(x,y) == 1){
+                if(simulation.getState(x,y) == Simulation.ALIVE){
                     g.fillRect(x,y,1,1);
                 }
             }
@@ -97,5 +93,13 @@ public class MainView extends VBox {
         for (int y = 0; y < this.simulation.height; y++) {
             g.strokeLine(0,y,10,y);
         }
+    }
+
+    public Simulation getSimulation() {
+        return this.simulation;
+    }
+
+    public void setDrawMode(int newDrawMode) {
+        this.drawMode = newDrawMode;
     }
 }
