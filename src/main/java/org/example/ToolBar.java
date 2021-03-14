@@ -9,9 +9,11 @@ import javafx.util.Duration;
 public class ToolBar extends javafx.scene.control.ToolBar {
 
     private MainView mainView;
+    private Keeper keeper;
 
     public ToolBar(MainView mainView){
         this.mainView = mainView;
+        keeper = new Keeper("sample.txt");
         Button step = new Button("Step");
         step.setOnAction(this::handleStep);
         Button draw = new Button("Draw");
@@ -24,8 +26,38 @@ public class ToolBar extends javafx.scene.control.ToolBar {
         start.setOnAction(this::handleStart);
         Button stop = new Button("Stop");
         stop.setOnAction(this::handleStop);
+        Button save = new Button("Save");
+        save.setOnAction(this::handleSave);
+        Button read = new Button("Read");
+        read.setOnAction(this::handleRead);
 
-        this.getItems().addAll(draw, erase, reset, step, start, stop);
+        this.getItems().addAll(draw, erase, reset, step, start, stop, save, read);
+    }
+
+    //To do: it works. no protection.
+    private void handleSave(ActionEvent actionEvent) {
+        //To do: must be checker implemented
+        System.out.println("handleStop");
+        this.mainView.getSimulation().printBoard();
+        this.keeper.createFile();
+        this.keeper.writeToFile(mainView);
+    }
+
+
+    private void handleRead(ActionEvent actionEvent) {
+
+        this.mainView.setApplicationState(MainView.SIMULATING);
+        Simulation readSimulation = new Simulation(mainView.getSimulation().width, mainView.getSimulation().height);
+        readSimulation.board = this.keeper.readFromFile(mainView);
+        for (int x = 0; x < mainView.getSimulation().width; x++) {
+            for (int y = 0; y < mainView.getSimulation().height; y++) {
+                readSimulation.setState(x,y,readSimulation.getState(x,y));
+            }
+        }
+        this.mainView.setSimulation(readSimulation);
+        Simulator simulator = new Simulator(this.mainView,readSimulation);
+        this.mainView.setSimulator(simulator);
+        this.mainView.draw();
     }
 
     private void handleStop(ActionEvent actionEvent) {

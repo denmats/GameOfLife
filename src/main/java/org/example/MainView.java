@@ -20,11 +20,20 @@ public class MainView extends VBox {
     private InfoBar infoBar;
     private Canvas canvas;
     private Affine affine;
+
+    public void setSimulation(Simulation simulation) {
+        this.simulation = simulation;
+    }
+
     private Simulation simulation;
     private Simulation initialSimulation;
 
     public Simulator getSimulator() {
         return simulator;
+    }
+
+    public void setSimulator(Simulator simulator) {
+        this.simulator = simulator;
     }
 
     private Simulator simulator;
