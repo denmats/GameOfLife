@@ -15,8 +15,15 @@ public class ToolBar extends javafx.scene.control.ToolBar {
         draw.setOnAction(this::handleDraw);
         Button erase = new Button("Erase");
         erase.setOnAction(this::handleErase);
+        Button reset = new Button("Reset");
+        reset.setOnAction(this::handleReset);
 
-        this.getItems().addAll(draw, erase, step);
+        this.getItems().addAll(draw, erase, reset, step);
+    }
+
+    private void handleReset(ActionEvent actionEvent) {
+        this.mainView.setApplicationState(MainView.EDITING);
+        this.mainView.draw();
     }
 
     private void handleErase(ActionEvent actionEvent) {
@@ -31,6 +38,9 @@ public class ToolBar extends javafx.scene.control.ToolBar {
 
     private void handleStep(ActionEvent actionEvent) {
         System.out.println("step");
+
+        this.mainView.setApplicationState(MainView.SIMULATING);
+
         this.mainView.getSimulation().step();
         this.mainView.draw();
     }
