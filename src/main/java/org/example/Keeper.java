@@ -1,13 +1,10 @@
 package org.example;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Keeper {
 
-    //private MainView mainView;
     private String filename;
     private File file;
     private int[][] template;
@@ -55,8 +52,8 @@ public class Keeper {
                 }
             }
 
-            //testing printing out the saved state of board
-            System.out.println("---");
+            //testing printing out the saved state of board in console
+            System.out.println("-Read from file-");
             for (int y = 0; y < mainView.getSimulation().height; y++) {
                 String line = "|";
                 for (int x = 0; x < mainView.getSimulation().width; x++) {
@@ -69,7 +66,7 @@ public class Keeper {
             }
             System.out.println("---\n");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("The file is not found!");;
         } catch (IOException e) {
             e.printStackTrace();
         }

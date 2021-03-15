@@ -11,7 +11,7 @@ public class ToolBar extends javafx.scene.control.ToolBar {
     private MainView mainView;
     private Keeper keeper;
 
-    public ToolBar(MainView mainView){
+    public ToolBar(MainView mainView) {
         this.mainView = mainView;
         keeper = new Keeper("sample.txt");
         Button step = new Button("Step");
@@ -34,10 +34,8 @@ public class ToolBar extends javafx.scene.control.ToolBar {
         this.getItems().addAll(draw, erase, reset, step, start, stop, save, read);
     }
 
-    //To do: it works. no protection.
+
     private void handleSave(ActionEvent actionEvent) {
-        //To do: must be checker implemented
-        System.out.println("handleStop");
         this.mainView.getSimulation().printBoard();
         this.keeper.createFile();
         this.keeper.writeToFile(mainView);
@@ -51,11 +49,11 @@ public class ToolBar extends javafx.scene.control.ToolBar {
         readSimulation.board = this.keeper.readFromFile(mainView);
         for (int x = 0; x < mainView.getSimulation().width; x++) {
             for (int y = 0; y < mainView.getSimulation().height; y++) {
-                readSimulation.setState(x,y,readSimulation.getState(x,y));
+                readSimulation.setState(x, y, readSimulation.getState(x, y));
             }
         }
         this.mainView.setSimulation(readSimulation);
-        Simulator simulator = new Simulator(this.mainView,readSimulation);
+        Simulator simulator = new Simulator(this.mainView, readSimulation);
         this.mainView.setSimulator(simulator);
         this.mainView.draw();
     }
